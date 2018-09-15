@@ -1,0 +1,21 @@
+{
+  "name": "package",
+  "version": "1.0.0",
+  "description": "File to manage npm packages",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "(https://github.com/gouravagarwal/NodeCrud.git)"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bootstrap": "^4.1.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.3",
+    "express-ejs-layouts": "^2.5.0"
+  }
+}
