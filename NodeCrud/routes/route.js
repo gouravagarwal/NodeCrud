@@ -21,6 +21,11 @@ router.get('/name', nameController.showNamePage);
 //all event route
 router.get('/events', eventsController.showEvents);
 
+//seed database
+router.get('/events/seed',eventsController.seedDatabase);
+
 //single event route
 router.get('/events/:slug', eventsController.showSingle);
+
+
 
