@@ -3,6 +3,7 @@
 const express = require('express');
 const expressLayouts = require('express-ejs-layouts');
 const mongoose = require('mongoose');
+const bodyParser = require('body-parser');
 
 
 //initialise express app
@@ -18,13 +19,16 @@ app.use(express.static(__dirname + '/public'));
 app.set('view engine', 'ejs');
 app.use(expressLayouts);
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
 
 //connect to the database
 //mongoose.connect('mongodb://gourav:Passw0rd@ds141870.mlab.com:41870/asiangames', { useNewUrlParser: true });
 
-mongoose.connect('mongodb://@ds141870.mlab.com:41870/asiangames',{
-    auth:{
-        user:'gourav',
+mongoose.connect('mongodb://@ds141870.mlab.com:41870/asiangames', {
+    auth: {
+        user: 'gourav',
         password: 'Passw0rd'
     },
     useNewUrlParser: true

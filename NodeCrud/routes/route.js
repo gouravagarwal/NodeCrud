@@ -24,8 +24,15 @@ router.get('/events', eventsController.showEvents);
 //seed database
 router.get('/events/seed',eventsController.seedDatabase);
 
+//create new event 
+router.get('/events/create', eventsController.createEvent);
+
+//save new event in the database
+router.post('/events/create', eventsController.saveEvent);
+
 //single event route
 router.get('/events/:slug', eventsController.showSingle);
+
 
 
 

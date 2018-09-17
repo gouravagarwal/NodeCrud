@@ -1,10 +1,12 @@
-const Event = require('../models/event.model');
+import Toast from 'toaster-js';
+import Event, { remove, findOne, find } from '../models/event.model';
 
-module.exports = {
-    showEvents: showEvents,
-    showSingle: showSingle,
-    seedDatabase: seedDatabase
-};
+
+export const showEvents = showEvents;
+export const showSingle = showSingle;
+export const seedDatabase = seedDatabase;
+export const createEvent = createEvent;
+export const saveEvent = saveEvent;
 
 
 /**
@@ -18,7 +20,7 @@ function seedDatabase(req, res) {
         { name: 'VolleyBall', slug: 'volleyball', description: 'Team Game with 6 players' }
     ]
 
-    Event.remove({}, () => {
+    remove({}, () => {
         for (event of events) {
             var newEvent = new Event(event);
             newEvent.save();
@@ -32,10 +34,9 @@ function seedDatabase(req, res) {
  * Show a single event
  */
 function showSingle(req, res) {
-    Event.findOne({slug: req.params.slug}, (err,event) => {
-        console.log(event);
-        if(event === null){
-            event = { name: 'Invalid Input', slug: 'invalid', description: 'You have provided an invalid input' };
+    findOne({ slug: req.params.slug }, (err, event) => {
+        if (event === null) {
+            res.status(404).send('You have provided an invalid input');
         }
         res.render('pages/single', { event: event });
     });
@@ -45,8 +46,41 @@ function showSingle(req, res) {
  * Show all the events
  */
 function showEvents(req, res) {
-    Event.find({}, (err, events) => {
+    find({}, (err, events) => {
         //return view with data
         res.render('pages/events', { events: events });
     });
 }
+
+
+/**
+ * Creates a new event in the database 
+ */
+function createEvent(req, res) {
+    res.render('pages/event-create');
+}
+
+/**
+ * Saves new event in the database
+ */
+function saveEvent(req, res) {
+
+    let event = new Event({
+        name: req.body.name,
+        slug: req.body.slug,
+        description: req.body.description
+    });
+
+    event.save((err) => {
+        if (err) {
+            res.status(303).send(new toast("Something went wrong"));
+        }
+        else {
+            res.send(new toast("Event added successfully!"));
+        }
+
+        res.redirect('/events');
+    });
+
+}
+
