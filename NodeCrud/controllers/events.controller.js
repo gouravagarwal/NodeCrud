@@ -1,12 +1,16 @@
-import Toast from 'toaster-js';
-import Event, { remove, findOne, find } from '../models/event.model';
+
+const Event = require('../models/event.model');
 
 
-export const showEvents = showEvents;
-export const showSingle = showSingle;
-export const seedDatabase = seedDatabase;
-export const createEvent = createEvent;
-export const saveEvent = saveEvent;
+module.exports = {
+    showEvents: showEvents,
+    showSingle: showSingle,
+    seedDatabase: seedDatabase,
+    createEvent: createEvent,
+    saveEvent: saveEvent,
+    updateEvent: updateEvent,
+    deleteEvent: deleteEvent
+};
 
 
 /**
@@ -20,7 +24,7 @@ function seedDatabase(req, res) {
         { name: 'VolleyBall', slug: 'volleyball', description: 'Team Game with 6 players' }
     ]
 
-    remove({}, () => {
+    Event.remove({}, () => {
         for (event of events) {
             var newEvent = new Event(event);
             newEvent.save();
@@ -34,7 +38,7 @@ function seedDatabase(req, res) {
  * Show a single event
  */
 function showSingle(req, res) {
-    findOne({ slug: req.params.slug }, (err, event) => {
+    Event.findOne({ slug: req.params.slug }, (err, event) => {
         if (event === null) {
             res.status(404).send('You have provided an invalid input');
         }
@@ -46,7 +50,7 @@ function showSingle(req, res) {
  * Show all the events
  */
 function showEvents(req, res) {
-    find({}, (err, events) => {
+    Event.find({}, (err, events) => {
         //return view with data
         res.render('pages/events', { events: events });
     });
@@ -73,14 +77,41 @@ function saveEvent(req, res) {
 
     event.save((err) => {
         if (err) {
-            res.status(303).send(new toast("Something went wrong"));
+            res.status(303).send('Something went wrong');
         }
         else {
-            res.send(new toast("Event added successfully!"));
+            // res.flash('success', 'Event added successfully!');
+            res.redirect('/events');
         }
-
-        res.redirect('/events');
     });
 
 }
 
+/**
+ * Update the event
+ */
+function updateEvent(req, res) {
+    //find the event
+
+    //if not found, return 404
+    Event.findOne({ slug: req.params.slug }, (err, event) => {
+        if (event === null) {
+            res.status(404).send('Invalid request');
+        }
+
+        res.render()
+    });
+
+    //update the event
+
+}
+
+/**
+ * Delete an event
+ */
+function deleteEvent(req, res) {
+    Event.findOneAndRemove({ slug: req.params.slug }, (err) => {
+        if (err) return res.status(400).send('Bad request');
+        else res.redirect('/events');
+    });
+}

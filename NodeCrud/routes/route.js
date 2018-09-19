@@ -33,6 +33,12 @@ router.post('/events/create', eventsController.saveEvent);
 //single event route
 router.get('/events/:slug', eventsController.showSingle);
 
+//update single courese
+router.put('/events/course/:slug', eventsController.updateEvent);
+
+//delete an event 
+router.get('/events/:slug/delete', eventsController.deleteEvent);
+
 
 
 
